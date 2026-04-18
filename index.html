@@ -3,13 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat de Atendimento</title>
+    <title>Atendimento</title>
+    <style>
+        body { background-color: #ffffff; }
+        /* Esconde o botão piscando até que ele abra, para evitar o "pulo" visual */
+        #waticket-chat-container { opacity: 0; transition: opacity 0.5s; }
+    </style>
 </head>
 <body>
+
     <script>
-window.WebchatChannelId= '8851ff3a-a647-448b-9aa8-b53c6d351ca0';
-</script>
-<script src="https://zap.ola.app.br/webchat-fab.js" async></script>
+        window.WebchatChannelId= '8851ff3a-a647-448b-9aa8-b53c6d351ca0';
+
+        // Função para tentar abrir o chat automaticamente
+        function forceOpenChat() {
+            // Procura o botão do WaTicket (geralmente uma div ou button)
+            const chatButton = document.querySelector('.webchat-fab-button') || 
+                               document.querySelector('[id*="webchat"]') ||
+                               document.querySelector('button');
+
+            if (chatButton) {
+                chatButton.click(); // Simula o clique
+                console.log("Chat aberto automaticamente!");
+            } else {
+                // Se ainda não carregou, tenta novamente em 500ms
+                setTimeout(forceOpenChat, 500);
+            }
+        }
+
+        // Inicia a tentativa de abertura após o carregamento da página
+        window.addEventListener('load', forceOpenChat);
+    </script>
+
+    <script src="https://zap.ola.app.br/webchat-fab.js" async></script>
 
 </body>
 </html>
