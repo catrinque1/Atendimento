@@ -6,32 +6,29 @@
     <title>Atendimento</title>
 </head>
 <body>
-
     <script>
-        // Define o ID globalmente ANTES de qualquer outra coisa
+        // Forçamos a variável no nível mais alto do navegador
         window.WebchatChannelId = '8851ff3a-a647-448b-9aa8-b53c6d351ca0';
 
-        // Função que tenta clicar no botão assim que ele aparece
-        function autoOpen() {
-            const btn = document.querySelector('.webchat-fab-button') || 
-                        document.querySelector('[class*="fab"]') ||
-                        document.querySelector('button');
-            if (btn) {
-                btn.click();
-            } else {
-                setTimeout(autoOpen, 500);
-            }
+        function iniciar() {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.src = 'https://zap.ola.app.br/webchat-fab.js';
+            // Garante que o ID seja lido ANTES do script rodar
+            document.head.appendChild(s);
+
+            s.onload = function() {
+                var tentarAbrir = setInterval(function() {
+                    var btn = document.querySelector('.webchat-fab-button') || document.querySelector('button');
+                    if (btn) {
+                        btn.click();
+                        clearInterval(tentarAbrir);
+                    }
+                }, 500);
+            };
         }
 
-        // Carrega o script do chat manualmente para garantir a ordem
-        const script = document.createElement('script');
-        <script src="https://zap.ola.app.br/webchat-fab.js" async></script>
-        script.onload = () => {
-            console.log("Script carregado, tentando abrir...");
-            autoOpen();
-        };
-        document.body.appendChild(script);
+        window.onload = iniciar;
     </script>
-
 </body>
 </html>
