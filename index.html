@@ -8,30 +8,30 @@
 <body>
 
     <script>
-        // 1. Definimos o ID imediatamente
+        // Define o ID globalmente ANTES de qualquer outra coisa
         window.WebchatChannelId = '8851ff3a-a647-448b-9aa8-b53c6d351ca0';
 
-        // 2. Função para abrir o chat apenas quando ele estiver pronto
-        function abrirChatQuandoPronto() {
-            const botao = document.querySelector('.webchat-fab-button') || 
-                         document.querySelector('[id*="webchat"]') ||
-                         document.querySelector('button');
-
-            if (botao) {
-                botao.click();
-                console.log("Chat iniciado!");
+        // Função que tenta clicar no botão assim que ele aparece
+        function autoOpen() {
+            const btn = document.querySelector('.webchat-fab-button') || 
+                        document.querySelector('[class*="fab"]') ||
+                        document.querySelector('button');
+            if (btn) {
+                btn.click();
             } else {
-                // Se o botão ainda não apareceu, tenta de novo em breve
-                setTimeout(abrirChatQuandoPronto, 300);
+                setTimeout(autoOpen, 500);
             }
         }
 
-        // Inicia a verificação assim que a página carrega
-        window.onload = abrirChatQuandoPronto;
+        // Carrega o script do chat manualmente para garantir a ordem
+        const script = document.createElement('script');
+        <script src="https://zap.ola.app.br/webchat-fab.js" async></script>
+        script.onload = () => {
+            console.log("Script carregado, tentando abrir...");
+            autoOpen();
+        };
+        document.body.appendChild(script);
     </script>
-
-    <!-- 3. Carregamos o script do WaTicket POR ÚLTIMO -->
-    <script src="https://zap.ola.app.br/webchat-fab.js" async></script>
 
 </body>
 </html>
